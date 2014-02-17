@@ -1,7 +1,261 @@
-@import '_settings'
-
 normalize()
-base()
+
+red = #eb5a4f
+blue = #47b7e6
+dark-blue = #0089fa
+white = #fff
+grey = #333
+light-grey = lighten(grey, 50)
+black = #000
+
+vendors = webkit moz o ms official
+
+*
+  padding 0
+  margin 0
+  webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 
 body
-  padding: 50px
+  font-family 'Source Sans Pro' sans-serif
+  font-weight 400
+  background url('/img/backgrounds/chevelle.jpg') no-repeat center center fixed
+  background-size cover
+
+h1, h2, h3, h4, h5
+  font-weight 300
+
+#landing
+  a
+    reset-link()
+    color blue
+    border-bottom 1px solid blue
+  a:hover
+    color blue
+    border-bottom 3px solid red
+  header
+    nav     
+      
+      h1
+        position absolute
+        top 1.3em
+        left 10%
+      ul
+        position absolute
+        top 3.5em
+        right 10%
+        list-style none
+        li
+          display inline-block
+          margin-left 1em
+        .active
+          border-bottom 3px solid red
+
+    #login
+      position absolute
+      top 6.5em
+      right 10%
+      width 320px
+  
+      button, input
+        width 100%
+        height 2em
+        background-color white
+        border 0
+      input
+        text-indent 1em
+        box-shadow inset 0 0 .1em rgba(0, 0, 0, .1)
+      button
+        color white
+        background-color red
+      input:focus
+        box-shadow inset 0 0 .1em rgba(0, 0, 0, .1)
+        outline 0
+        background-color white
+        color black
+
+  #search
+    position absolute
+    text-align center
+    top 40%
+    width 100%
+    h2
+      display inline-block
+      background-color rgba(0, 0, 0, .35)
+      color white
+      font-size 2em
+      margin-left -1em
+      margin-bottom .25em
+      padding .25em
+    input
+      width 25em
+      height 2em
+      outline 0
+      border 0
+      text-indent 1em
+    button
+      margin-left -1em
+      border 0
+      width 5em
+      height 2em
+      background-color red
+      color white
+
+  footer
+    position absolute
+    text-align center
+    bottom 0
+    width 100%
+    p
+      margin-bottom .25em
+
+
+#dashboard
+  position absolute
+  height 100%
+  width 100%
+  background url('/img/backgrounds/crossword.png')
+  color grey
+
+  *
+    margin 0
+    padding 0
+
+  nav#top
+    height 10%
+    background-color grey
+    color light-grey
+    ul
+      list-style none
+      padding-top .25em
+      margin-left 1em
+    li
+      display inline-block
+    h2
+      padding-top .5em
+      font-weight 400
+
+    #search
+      padding-bottom .5em
+      margin-left 2em
+      input
+        background url(http://www.levenmetwater.nl/static/global/images/icon-search.png) 1em center no-repeat
+        background-color white
+        border 0
+        padding 10px 5px
+        text-indent 2em
+
+        transition all 0.2s
+
+        width 6em
+
+      input:focus
+        background-position -20px center
+        text-indent 1em
+        width 20em
+
+    #account
+      position absolute
+      top .75em
+      right 5%
+      color white
+      padding .5em 1em .5em 1em
+      a
+        reset-link()
+      img
+        margin-bottom -4px
+        height 1.5em
+      &:hover
+        background-color red
+
+    #accountsettings
+      position absolute
+      top 3em
+      right 5%
+      z-index 3
+      width 133px
+      background-color light-grey
+      box-shadow 0 0 2px 2px rgba(0,0,0,0.4)
+      *
+        color grey
+        display inline-block
+        width 133px
+      #loggedin
+        display none
+      #loggedout
+        input, button
+          border 0
+          padding 0
+          box-shadow 0
+          background-color white
+          outline 0
+        input
+          text-indent .5em
+        button
+          color white
+          background-color red
+
+  #leftside, #center, #rightside
+    position absolute
+    float left
+    display inline-block
+
+  #leftside
+    height 90%
+    width 100px
+    height 100px
+    ul
+      background-color white
+      width 100%
+      list-style none
+      text-align center
+      img
+        width 64px
+
+    .button
+      padding 1em
+      color grey
+      a
+        reset-link()
+    .button:hover
+      color white
+      background-color red
+    .button:active
+      color white
+      background-color red
+
+  #center
+    left 100px
+    height 90%
+    width 92%
+    border-top 5px solid red
+    border-left 2px solid grey
+    padding 1em
+
+  #rightside
+    display none
+    height 90%
+    width 40%
+    right 0
+    z-index 2
+    background-color white
+    border-left 1px solid grey
+    padding 1em
+    transition all 0.2s
+    input
+      width 32px
+      border 1px solid grey
+    #leftarrow
+      display none
+
+  #rightside.inactive
+    transition all 0.2s
+    height 90%
+    width 40%
+    right -(35%)
+    #rightarrow
+      display none
+    #leftarrow
+      display block
+    

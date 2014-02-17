@@ -1,14 +1,22 @@
-!= title_with_markup()
+#landing
+  header
+    nav
+      h1 Global Parts International Inc.
+      ul
+        li: a(href='#login') Login
+        li: a(href='#signup') Sign up
+        li: a(href='#support') Support
 
-:markdown
-  **Whoo!** You got everything working. Now get to making cool things : )
+    #login
+      input(type='text' placeholder='Username')
+      input(type='password' placeholder='Password')
+      button Submit
 
-p this file can be found in views/index.jade
-
-include _partial
-
-:markdown
-  For help and documentation, check out [http://roots.cx](http://roots.cx)
-
-:coffeescript
-  console.log 'you can even use coffeescript in your views, aw yeah'
+  main
+    #search
+      h2 Find american car parts from 1945 - 1990
+      br
+      input(type='text' placeholder='Part / Car:   ID, Year, Make, Model')
+      button Search
+  footer
+    p &#169; copyright 2014
