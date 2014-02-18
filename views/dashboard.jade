@@ -8,14 +8,10 @@
         a(href='#account') My Account
           img(src='/img/icons/ios7-person-outline.svg')
       li#accountsettings
-        #loggedin
-          a(href='#settings')
-          a(href='#logout')
         #loggedout.active
           input(type='text' placeholder='Username')
           input(type='password' placeholder='Password')
           button Submit
-
 
   main
     #leftside
@@ -43,5 +39,5 @@
         // add support documentation
 
     #rightside.inactive
-      input(type='image' src='/img/icons/ios7-arrow-right.svg')#rightarrow
       input(type='image' src='/img/icons/ios7-arrow-left.svg')#leftarrow
+      input(type='image' src='/img/icons/ios7-arrow-right.svg')#rightarrow

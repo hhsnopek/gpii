@@ -8,9 +8,48 @@
         li: a(href='#support') Support
 
     #login
-      input(type='text' placeholder='Username')
-      input(type='password' placeholder='Password')
-      button Submit
+      input(type='text' placeholder='Username' id='loginUser')
+      input(type='password' placeholder='Password' id='loginPass')
+      button(id='loginButton') Submit
+
+  form(method='post')
+    h1 Sign up
+    h4 All fields are required!
+
+    ul
+      li
+        label(for='username') Username:
+        input(type='text' name='username' placeholder='Example' required)
+      li
+        label(for='email') Email:
+        input(type='email' name='email' placeholder='Example@domain.com' required)
+      li
+        label(for='pass') Password:
+        input(type='password' name='pass' placeholder='Password' required)
+      li
+        label(for='confirmpass') Confirm Password:
+        input(type='password' name='confirmpass' placeholder='Confirm Password' required onChange='passwordCheck()')
+      li:h3#passwordMatch
+
+    ul#info
+      li:h4 Shipping Info
+      li
+        label(for='phone') Telephone:
+        input(type='tel' name='phone' placeholder='123-455-5555' required maxlength='12')
+      li
+        label(for='address') Address:
+        input(type='text' name='address' placeholder='1234 Example Ln' required)
+      li
+        label(for='city') City:
+        input(type='text' name='city' placeholder='Example' required)
+      li
+        label(for='state') State:
+        input(type='text' name='state' placeholder='EX' required size='3' maxlength='2')
+      li
+        label(for='zip') Zip:
+        input(type='text' name='zip' placeholder='55555 (- 5555)' required min='5' maxlength='10')
+
+    button(type='submit') Sign up!
 
   main
     #search
