@@ -15,12 +15,26 @@ require [
   'jquery',
   'Backbone',
 ], ($, Backbone) ->
+  ###
+  # NOTE: Add url for testing
+  ###
 
   console.log 'main.coffee loading...\n'
 
   ###
   # Views
   ###
+
+  class searchView extends Backbone.View
+    events:
+      'click #searchButton': 'search'
+
+    search: () ->
+      regex = /\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*/
+      input = JSON.stringify(regex.exec($('search#searchInput').val()))
+      console.log input
+
+
   class LoginView extends Backbone.View
     events:
       'click #login': 'displayLogin'
@@ -64,7 +78,7 @@ require [
 
     signup: () ->
       console.log 'submitting signup...'
-      url = 'localhost:3000'
+      url = ''
       newToken = sessionToken($('#usernameForm').val(), $('#passwordForm').val(), $('#confirmpasswordForm').val())
       formValues =
         username: $('#usernameForm').val()
@@ -96,35 +110,48 @@ require [
     render: () ->
       console.log 'OrdersView initialized...'
 
+
   ###
   # Models
   ###
   class AccountModel extends Backbone.Model
     defaults: () ->
-      "username": ""
-      "token": ""
-      "email": ""
-      "phone": ""
-      "address": ""
-      "city": ""
-      "state": ""
-      "zip": ""
+      username: ""
+      token: ""
+      email: ""
+      phone: ""
+      address: ""
+      city: ""
+      state: ""
+      zip: ""
+
 
   class OrderModel extends Backbone.Model
     defaults: () ->
-      "account": ""
-      "part": ""
-      "qty": ""
-      "cost": ""
-      "shipped": null
-      "paid": null
+      account: ""
+      part: ""
+      qty: ""
+      cost: ""
+      shipped: null
+      paid: null
 
+    toggle: () ->
+      @save
+        done: !@get("done")
+
+  class SearchModel extends Backbone.Model
+    defaults: () ->
+      input: ""
 
   ###
   # Collections
   ###
   class OrdersCollection extends Backbone.Collection
     model: OrderModel
+
+    done: () ->
+      @where
+        done: true
 
     shipped: () ->
       @where
@@ -135,6 +162,10 @@ require [
         paid: true
 
     comparator: 'order'
+
+
+  class SearchCollection extends Backbone.Collection
+    model: SearchModel
 
 
   ###
@@ -148,6 +179,11 @@ require [
       "signup": "signup"
       "support": "support"
       "dashboard": "dashboard"
+
+    home: () ->
+      console.log '\nhome rendering...'
+      new searchView()
+      console.log 'home rendered\n'
 
     login: () ->
       console.log '\nlogin rendering...'
@@ -185,11 +221,13 @@ require [
     console.log 'form submitted'
 
   ###
-  # Initialize all at once, one success; respond
+  # Initialize all at once, one success
   ###
   bigBang = () ->
     console.log "Creating Views/Models/collections"
     router = new Router()
+    orders = new OrdersCollection()
+    search_history = new SearchCollection()
     Backbone.history.start()
     console.log 'history started'
     console.log 'Created Views/Models/Collections'
