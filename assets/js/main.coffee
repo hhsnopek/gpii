@@ -51,11 +51,10 @@ require [
     login: () ->
       console.log 'loggin in...'
       url = 'localhost:3000'
-      pass = $('#newPass').val()
-      confirmPass = $('#confirmPass').val()
+      newToken = sessionToken($('#loginUser').val(), $('#loginPass').val(), 'login')
       formValues =
         user: $('#loginUser').val(),
-        token: sessionToken()
+        token: newToken
 
       $.ajax
         url: url
@@ -97,7 +96,8 @@ require [
         success: (data) ->
           console.log 'Sign up request details: ' + data
           $('#signupform').toggle()
-          unless data.error window.location.replace '#' else alert 'Sign up: ' + data.error
+          unless data.error navigate("dashboard", {trigger: true, replace: true}) else alert 'Sign up: ' + data.error
+
 
 
   class SupportView extends Backbone.View
@@ -216,7 +216,7 @@ require [
   ###
   # TODO: Move functions to proper views
   sessionToken = (username, password, confirmPass) ->
-    if confirmPass == '' or password == confirmPass
+    if confirmPass == 'login' or password == confirmPass
       return username+password
       
     else
