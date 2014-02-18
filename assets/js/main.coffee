@@ -65,9 +65,26 @@ require [
       $('#support').toggle()
 
 
-  class LoginModel extends Backbone.Model
+  class AccountModel extends Backbone.Model
     initialize: () ->
-      console.log 'initializing LoginModel'
+      console.log 'initializing AccountModel'
+    defaults:
+      "username": ""
+      "password": ""
+      "email": ""
+      "phone": ""
+      "address": ""
+      "city": ""
+      "state": ""
+      "zip": ""
+
+  class OrderModel extends Backbone.Model
+    defaults:
+      "account": ""
+      "part": ""
+      "qty": ""
+      "cost": ""
+      
 
 
   class Router extends Backbone.Router
