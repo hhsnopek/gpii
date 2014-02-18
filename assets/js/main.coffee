@@ -18,8 +18,9 @@ require [
 
   console.log 'main loading'
 
-
-
+  ###
+  # Views
+  ###
   class LoginView extends Backbone.View
     events:
       'click #login': 'displayLogin'
@@ -65,9 +66,10 @@ require [
       $('#support').toggle()
 
 
+  ###
+  # Models
+  ###
   class AccountModel extends Backbone.Model
-    initialize: () ->
-      console.log 'initializing AccountModel'
     defaults:
       "username": ""
       "password": ""
@@ -84,9 +86,19 @@ require [
       "part": ""
       "qty": ""
       "cost": ""
-      
 
 
+  ###
+  # Collections
+  ###
+
+  class OrdersCollection extends Backbone.Collection
+    initialize: () ->
+      console.log 'OrdersCollection created'
+
+  ###
+  # Router
+  ###
   class Router extends Backbone.Router
 
     routes:
