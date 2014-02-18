@@ -18,20 +18,24 @@ require [
 
   console.log 'main loading'
 
-  class LoginView extends Backbone.View
-    initialize: () ->
-      console.log 'initializing LoginView'
 
+
+  class LoginView extends Backbone.View
     events:
       'click #login': 'displayLogin'
-      'click #loginButton': 'login'
+      'click button#loginButton': 'login'
 
     render: () ->
+      console.log 'LoginView rendered'
+      $('#login').toggle()
+
+    displayLogin: () ->
+      console.log 'displayLogin triggered'
       $('#login').toggle()
 
     login: () ->
-      url = 'localhost:3000'
       console.log 'loggin in...'
+      url = 'localhost:3000'
       formValues =
         user: $('#loginUser').val(),
         pass: $('#loginPass').val()
@@ -45,14 +49,45 @@ require [
           console.log 'Login request details: ' + data
           unless data.error window.location.replace '#' else alert 'Login: ' + data.error
 
+  class SignupView extends Backbone.View
+    events:
+      'click #signupSubmit': "signup"
+
+    signup: () ->
+      console.log 'submitting form'
+
+  class SupportView extends Backbone.View
+    events:
+      'click #support': "support"
+
+    render: () ->
+      console.log 'SupportView rendered'
+      $('#support').toggle()
+
+
+  class LoginModel extends Backbone.Model
+    initialize: () ->
+      console.log 'initializing LoginModel'
+
+
   class Router extends Backbone.Router
 
     routes:
       "": "home"
       "login": "login"
+      "signup": "signup"
+      "support": "support"
 
     login: () ->
       new LoginView().render()
+
+    signup: () ->
+      new SignupView().render()
+
+    support: () ->
+      new SupportView().render()
+
+
 
 
   passwordCheck = () ->
@@ -65,3 +100,8 @@ require [
     console.log 'form submitted'
 
   console.log 'main loaded'
+
+  login_view = new LoginView()
+  router = new Router()
+  Backbone.history.start()
+  console.log 'history started'
