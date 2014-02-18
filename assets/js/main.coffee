@@ -111,6 +111,11 @@ require [
       console.log 'OrdersView initialized...'
 
 
+  class DashboardView extends Backbone.View
+    render: () ->
+      console.log 'DashboardView initialized...'
+
+
   ###
   # Models
   ###
@@ -201,7 +206,7 @@ require [
       console.log 'support rendered\n'
 
     dashboard: () ->
-      consle.log '\ndashboard rendering...'
+      console.log '\ndashboard rendering...'
       new DashboardView().render()
       console.log 'dashboard rendered\n'
 
@@ -225,9 +230,9 @@ require [
   ###
   bigBang = () ->
     console.log "Creating Views/Models/collections"
-    router = new Router()
-    orders = new OrdersCollection()
-    search_history = new SearchCollection()
+    router = new Router
+    orders = new OrdersCollection
+    search_history = new SearchCollection
     Backbone.history.start()
     console.log 'history started'
     console.log 'Created Views/Models/Collections'
