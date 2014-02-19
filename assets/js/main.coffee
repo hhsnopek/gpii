@@ -26,26 +26,33 @@ require [
   ###
 
   class searchView extends Backbone.View
+    el: $('#search')
+
     events:
       'click #searchButton': 'search'
 
     search: () ->
-      regex = /\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*\s\w*/
-      input = JSON.stringify(regex.exec($('search#searchInput').val()))
+      input = JSON.stringify($('#searchInput').val())
       console.log input
+      url = ""
 
+      $.ajax
+        url += '/api/search/'
+        type = 'GET'
+        dataType 'Json'
+        data: input
+        success: (data) ->
+          console.log 'Search request details: ' + data
+          # todo: Navigate to DashboardView, display search parts under PartsView
 
   class LoginView extends Backbone.View
+    el: $('#login')
+
     events:
-      'click #login': 'displayLogin'
       'click button#loginButton': 'login'
 
     render: () ->
       console.log 'LoginView initialized...'
-      $('#login').toggle()    
-
-    displayLogin: () ->
-      console.log 'displayLogin triggered'
       $('#login').toggle()
 
     login: () ->
@@ -67,12 +74,13 @@ require [
 
 
   class SignupView extends Backbone.View
-    initialize: () ->
-      console.log 'SignupView initialized...'
+    el: $('#signupform')
+
     events:
       'click #signupSubmit': "signup"
 
     render: () ->
+      console.log 'SignupView initialized...'
       $('#signupform').toggle()
 
     signup: () ->
