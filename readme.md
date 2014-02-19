@@ -1,10 +1,11 @@
-Your Project Name
+GPII
 =================
-A brief summary of your project
 
-### Setup / Installation
-Some instructions on how to set up and/or install this project
+# NOTE: This project has been abandoned.
 
-### Staging/Production
-This site is staged at http://example.com [u: admin p: example]    
-This site is live at http://example.com
+This project was an advanced shoot off for CSC211 - Database Web Creation and Networks
+
+Abandonment reasoning; This project became too advanced and complex for my partner, to handle the concepts that I brought in.
+
+###Setup
+This project uses (roots)[http://roots.cx]
