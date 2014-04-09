@@ -30,7 +30,7 @@ require [
 
     events:
       'click #searchButton': 'search'
-
+    ###
     search: () ->
       input = JSON.stringify($('#searchInput').val())
       console.log input
@@ -44,7 +44,7 @@ require [
         success: (data) ->
           console.log 'Search request details: ' + data
           # todo: Navigate to DashboardView, display search parts under PartsView
-
+    ###
   class LoginView extends Backbone.View
     el: $('#login')
 
