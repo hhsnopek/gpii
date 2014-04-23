@@ -5,7 +5,7 @@ blue = #47b7e6
 dark-blue = #0089fa
 white = #fff
 grey = #333
-light-grey = lighten(grey, 50)
+light-grey = lighten(grey, 30)
 black = #000
 
 vendors = webkit moz o ms official
@@ -30,14 +30,15 @@ h1, h2, h3, h4, h5
 #landing
   a
     reset-link()
-    color blue
-    border-bottom 1px solid blue
+    color dark-blue
+    border-bottom 1px solid dark-blue
   a:hover
-    color blue
-    border-bottom 3px solid red
+    color darken(dark-blue, 10)
+    border-bottom 2px solid darken(dark-blue, 15)
   header
     nav
       h1
+        color grey
         position absolute
         top 1.3em
         left 10%
@@ -52,29 +53,6 @@ h1, h2, h3, h4, h5
         .active
           border-bottom 3px solid red
 
-    #login
-      display none
-      position absolute
-      top 6.5em
-      right 10%
-      width 320px
-  
-      button, input
-        width 100%
-        height 2em
-        background-color white
-        border 0
-      input
-        text-indent 1em
-        box-shadow inset 0 0 .1em rgba(0, 0, 0, .1)
-      button
-        color white
-        background-color red
-      input:focus
-        box-shadow inset 0 0 .1em rgba(0, 0, 0, .1)
-        outline 0
-        background-color white
-        color black
 
   form
     display none
@@ -112,6 +90,8 @@ h1, h2, h3, h4, h5
     text-align center
     top 40%
     width 100%
+    *
+      box
     h2
       display inline-block
       background-color rgba(0, 0, 0, .35)
@@ -125,15 +105,25 @@ h1, h2, h3, h4, h5
       width 32em
       height 2em
       outline 0
-      border 0
+      border 1px solid white
       text-indent 1em
+    input:focus
+      border 1px solid blue
     button
       margin-left -1em
       border 0
       width 5em
       height 2em
       background-color red
+      outline 0
       color white
+    button:active
+      background-color darken(red, 15)
+      outline 0
+    button:visted
+      background-color red
+      outline 0
+      
 
     #hint
       display none //inline-block
@@ -143,16 +133,19 @@ h1, h2, h3, h4, h5
       width 31.25em
       text-align left
       list-style none
-      border 1px solid grey
-      li
+      border 1px solid light-grey
+      box-shadow 0
+      p
         height 2em
         background-color white
-        border-bottom 1px 0 0 5px solid grey
+        border 1px 0 0 5px solid grey
         color light-grey
         text-indent .4em
-        p
-          padding .5em
-          margin 0
+        padding .5em
+        margin 0
+
+    #hint.active
+      display inline-block
 
 
   footer
@@ -162,152 +155,3 @@ h1, h2, h3, h4, h5
     width 100%
     p
       margin-bottom .25em
-
-
-#dashboard
-  position absolute
-  height 100%
-  width 100%
-  background url('/img/backgrounds/crossword.png')
-  color grey
-
-  *
-    margin 0
-    padding 0
-
-  nav#top
-    height 10%
-    background-color grey
-    color light-grey
-    ul
-      list-style none
-      padding-top .25em
-      margin-left 1em
-    li
-      display inline-block
-    h2
-      padding-top .5em
-      font-weight 400
-
-    #search
-      padding-bottom .5em
-      margin-left 2em
-      input
-        background url(http://www.levenmetwater.nl/static/global/images/icon-search.png) 1em center no-repeat
-        background-color white
-        border 0
-        padding 10px 5px
-        text-indent 2em
-
-        transition all 0.2s
-
-        width 6em
-
-      input:focus
-        background-position -20px center
-        text-indent 1em
-        width 20em
-
-    #account
-      position absolute
-      top .75em
-      right 5%
-      color white
-      padding .5em 1em .5em 1em
-      a
-        reset-link()
-      img
-        margin-bottom -4px
-        height 1.5em
-      &:hover
-        background-color red
-
-    #accountsettings
-      position absolute
-      top 3em
-      right 5%
-      z-index 3
-      width 133px
-      background-color light-grey
-      box-shadow 0 0 2px 2px rgba(0,0,0,0.4)
-      *
-        color grey
-        display inline-block
-        width 133px
-      #loggedin
-        display none
-      #loggedout
-        input, button
-          border 0
-          padding 0
-          box-shadow 0
-          background-color white
-          outline 0
-        input
-          text-indent .5em
-        button
-          color white
-          background-color red
-
-  #leftside, #center, #rightside
-    position absolute
-    float left
-    display inline-block
-
-  #leftside
-    height 90%
-    width 100px
-    height 100px
-    ul
-      background-color white
-      width 100%
-      list-style none
-      text-align center
-      img
-        width 64px
-
-    .button
-      padding 1em
-      color grey
-      a
-        reset-link()
-    .button:hover
-      color white
-      background-color red
-    .button:active
-      color white
-      background-color red
-
-  #center
-    left 100px
-    height 90%
-    width 92%
-    border-top 5px solid red
-    border-left 2px solid grey
-    padding 1em
-
-  #rightside
-    display none
-    height 90%
-    width 40%
-    right 0
-    z-index 2
-    background-color white
-    border-left 1px solid grey
-    padding 1em
-    transition all 0.2s
-    input
-      width 32px
-      border 1px solid grey
-    #leftarrow
-      display none
-
-  #rightside.inactive
-    transition all 0.2s
-    height 90%
-    width 40%
-    right -(35%)
-    #rightarrow
-      display none
-    #leftarrow
-      display block

@@ -15,11 +15,37 @@ require [
   'jquery',
   'Backbone',
 ], ($, Backbone) ->
+  activeSearch = false
+
   ###
   # NOTE: Add url for testing
   ###
 
   console.log 'main.coffee loading...\n'
+
+  # event listeners
+  $('#searchInput').keydown( () ->
+    if activeSearch is false
+      $('#hint').addClass('active')
+      activeSearch = true
+  )
+  
+  $('#searchInput').keyup(() ->
+    $('#hint p').text("Search for \"#{$(this).val()}\"")
+    if $(this).val() is ""
+      $('#hint').removeClass('active')
+      activeSearch = false
+  )
+
+  $('#searchInput').focus( () ->
+    if activeSearch is true
+      $('#hint').addClass('active')
+  )
+  
+  $('#searchInput').focusout( () ->
+    $('#hint').removeClass('active')
+  )
+
 
   ###
   # Views
@@ -45,33 +71,6 @@ require [
           console.log 'Search request details: ' + data
           # todo: Navigate to DashboardView, display search parts under PartsView
     ###
-  class LoginView extends Backbone.View
-    el: $('#login')
-
-    events:
-      'click button#loginButton': 'login'
-
-    render: () ->
-      console.log 'LoginView initialized...'
-      $('#login').toggle()
-
-    login: () ->
-      console.log 'loggin in...'
-      url = 'localhost:3000'
-      newToken = sessionToken($('#loginUser').val(), $('#loginPass').val(), 'login')
-      formValues =
-        user: $('#loginUser').val(),
-        token: newToken
-
-      $.ajax
-        url: url
-        type: 'POST'
-        dataType: 'Json'
-        data: formValues
-        success: (data) ->
-          console.log 'Login request details: ' + data
-          unless data.error window.location.replace '#' else alert 'Login: ' + data.error
-
 
   class SignupView extends Backbone.View
     el: $('#signupform')
@@ -107,6 +106,7 @@ require [
           unless data.error navigate("dashboard", {trigger: true, replace: true}) else alert 'Sign up: ' + data.error
 
 
+  class AboutView extends Backbone.View
 
   class SupportView extends Backbone.View
     render: () ->
@@ -119,9 +119,9 @@ require [
       console.log 'OrdersView initialized...'
 
 
-  class DashboardView extends Backbone.View
+  class ProductsView extends Backbone.View
     render: () ->
-      console.log 'DashboardView initialized...'
+      console.log 'ProductsView initialized...'
 
 
   ###
