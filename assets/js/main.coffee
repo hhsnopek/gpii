@@ -24,7 +24,7 @@ require [
   ###
   # Views
   ###
-  class homeView extends Backbone.View
+  class HomeView extends Backbone.View
 
     el: $('#home #searchContainer')
 
@@ -41,7 +41,7 @@ require [
     search: ->
       input = JSON.stringify($('#searchInput').val())
       search_results.set(query: input)
-      new productsView()
+      new ProductsView()
 
     keyupInput: ->
       $('#hint p').text("Search for \"#{$('#searchInput').val()}\"")
@@ -62,7 +62,7 @@ require [
       $('#hint').removeClass('active')
 
 
-  class aboutView extends Backbone.View
+  class AboutView extends Backbone.View
     initialize: ->
       @render()
 
@@ -70,7 +70,7 @@ require [
       display('#about')
 
 
-  class supportView extends Backbone.View
+  class SupportView extends Backbone.View
     initialize: ->
       @render()
 
@@ -78,7 +78,7 @@ require [
       display('#support')
 
 
-  class productsView extends Backbone.View
+  class ProductsView extends Backbone.View
     el: $('main #products')
 
     events:
@@ -113,7 +113,7 @@ require [
   # Models
   ###
 
-  class itemSearch extends Backbone.Model
+  class ItemSearch extends Backbone.Model
     query: ''
 
   ###
@@ -129,16 +129,16 @@ require [
       products: 'products'
 
     home: ->
-      new homeView().render()
+      new HomeView().render()
 
     about: ->
-      new aboutView()
+      new AboutView()
 
     support: ->
-      new supportView()
+      new SupportView()
 
     products: ->
-      new productsView()
+      new ProductsView()
 
   ###
   # Miscellaneous functions
@@ -180,7 +180,7 @@ require [
     )
 
     router = new Router
-    window.search_results = new itemSearch()
+    window.search_results = new ItemSearch()
     Backbone.history.start()
 
   bigBang()
