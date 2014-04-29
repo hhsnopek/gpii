@@ -40,7 +40,7 @@ require [
 
     search: ->
       input = JSON.stringify($('#searchInput').val())
-      search_results.set({query: "#{input}"})
+      search_results.set(query: input)
       new productsView()
 
     keyupInput: ->
@@ -105,7 +105,7 @@ require [
           "ID"
         ]
       }
-      results = fuzzySearch("#{input}", options)
+      results = fuzzySearch(input, options)
       console.log results
 
 
@@ -152,7 +152,7 @@ require [
     for page in pages
       $(page).css('display', 'none')
 
-    $("#{pagetodisplay}").css('display', 'block')
+    $(pagetodisplay).css('display', 'block')
     unless pagetodisplay is '#home'
       $('header nav').addClass('active')
       $('body').css('background', '#eee')
