@@ -240,10 +240,15 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-* {
-  padding: 0;
-  margin: 0;
-  webkit-box-sizing: border-box;
+html,
+body {
+  height: 100%;
+  font-family: 'Source Sans Pro' sans-serif;
+  font-weight: 400;
+}
+html *,
+body * {
+  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -251,36 +256,75 @@ table {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
 }
+html h1,
+body h1,
+html h2,
+body h2,
+html h3,
+body h3,
+html h4,
+body h4,
+html h5,
+body h5 {
+  font-weight: 300;
+}
 body {
-  font-family: 'Source Sans Pro' sans-serif;
-  font-weight: 400;
   background: url("/img/backgrounds/chevelle.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   -ms-background-size: cover;
   background-size: cover;
+  -webkit-transition: background 1s fade;
+  -moz-transition: background 1s fade;
+  -o-transition: background 1s fade;
+  -webkit-transition: background 1s fade;
+  -moz-transition: background 1s fade;
+  -o-transition: background 1s fade;
+  -ms-transition: background 1s fade;
+  transition: background 1s fade;
 }
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-weight: 300;
+header {
+  height: 20%;
+  padding-top: 1em;
 }
-#landing a {
+header nav #header {
+  position: absolute;
+  left: 5%;
+}
+header nav #header a {
+  text-decoration: none;
+  color: #333;
+  border: 0;
+}
+header nav #header a:hover {
+  color: #333;
+  border: 0;
+}
+header nav ul {
+  position: absolute;
+  margin-top: 2.25em;
+  right: 10%;
+  list-style: none;
+}
+header nav ul li {
+  display: inline-block;
+}
+header nav ul li a {
+  margin: 0 0.5em 0.25em 0.5em;
   color: inherit;
   border: none;
   text-decoration: none;
   color: #0089fa;
-  border-bottom: 1px solid #0089fa;
+  padding-bottom: 0.25em;
+  border-bottom: 0.2em solid #c0c0c0;
 }
-#landing a:hover {
+header nav ul li a:hover {
   color: inherit;
   border: none;
   text-decoration: none;
 }
-#landing a:visited {
+header nav ul li a:visited {
   -webkit-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   -moz-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   -o-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -288,70 +332,21 @@ h5 {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-#landing a:hover {
-  color: #006dc7;
-  border-bottom: 2px solid #005fad;
+header nav ul li a:hover {
+  color: #0089fa;
+  border-bottom: 0.2em solid #0089fa;
 }
-#landing header nav h1 {
-  color: #333;
-  position: absolute;
-  top: 1.3em;
-  left: 10%;
-}
-#landing header nav ul {
-  position: absolute;
-  top: 3.5em;
-  right: 10%;
-  list-style: none;
-}
-#landing header nav ul li {
-  display: inline-block;
-  margin-left: 1em;
-}
-#landing header nav ul .active {
+header nav ul li.active {
   border-bottom: 3px solid #eb5a4f;
 }
-#landing form {
-  display: none;
-  position: absolute;
-  top: 10%;
-  left: 25%;
-  width: 50%;
+main {
   height: 80%;
-  z-index: 9999;
-  background-color: #fff;
-  border: 5px #eb5a4f solid;
-  padding-left: 2em;
 }
-#landing form label {
-  margin-left: 2em;
-}
-#landing form input {
-  margin-left: 1em;
-  text-indent: 0.5em;
-}
-#landing form ul {
-  list-style: none;
-  padding: 0;
-}
-#landing form li {
-  padding-bottom: 0.5em;
-}
-#landing form button {
-  margin-left: 60%;
-  height: 2em;
-  background-color: #eb5a4f;
-  color: #fff;
-  padding: 0.5em 1em 0.5em 1em;
-  border: 0;
-}
-#landing #search {
-  position: absolute;
+main #home #searchContainer {
+  padding-top: 7.5%;
   text-align: center;
-  top: 40%;
-  width: 100%;
 }
-#landing #search h2 {
+main #home #searchContainer h2 {
   display: inline-block;
   background-color: rgba(0,0,0,0.35);
   color: #fff;
@@ -360,19 +355,19 @@ h5 {
   margin-bottom: 0.25em;
   padding: 0.25em;
 }
-#landing #search input {
-  margin-left: -1.5em;
+main #searchBar input {
+  margin-left: -0.5em;
   width: 32em;
   height: 2em;
   outline: 0;
   border: 1px solid #fff;
   text-indent: 1em;
 }
-#landing #search input:focus {
+main #searchBar input:focus {
   border: 1px solid #47b7e6;
 }
-#landing #search button {
-  margin-left: -1em;
+main #searchBar button {
+  margin-left: -5px;
   border: 0;
   width: 5em;
   height: 2em;
@@ -380,20 +375,20 @@ h5 {
   outline: 0;
   color: #fff;
 }
-#landing #search button:active {
+main #searchBar button:active {
   background-color: #d52618;
   outline: 0;
 }
-#landing #search button:visted {
+main #searchBar button:visted {
   background-color: #eb5a4f;
   outline: 0;
 }
-#landing #search #hint {
+main #hint {
   display: none;
   margin: 0;
   padding: 0;
-  margin-left: -6.5em;
-  width: 31.25em;
+  margin-left: -5.5em;
+  width: 32em;
   text-align: left;
   list-style: none;
   border: 1px solid #808080;
@@ -403,7 +398,7 @@ h5 {
   -ms-box-shadow: 0;
   box-shadow: 0;
 }
-#landing #search #hint p {
+main #hint p {
   height: 2em;
   background-color: #fff;
   border: 1px 0 0 5px solid #333;
@@ -412,15 +407,200 @@ h5 {
   padding: 0.5em;
   margin: 0;
 }
-#landing #search #hint.active {
+main #hint.active {
   display: inline-block;
 }
-#landing footer {
-  position: absolute;
-  text-align: center;
-  bottom: 0;
+main #about,
+main #support,
+main #products {
+  display: none;
   width: 100%;
+  height: 100%;
+  background-color: #eee;
+  padding: 5%;
+  padding-top: 0;
 }
-#landing footer p {
-  margin-bottom: 0.25em;
+main #about #header,
+main #support #header,
+main #products #header {
+  font-size: 2em;
+  margin-top: -0.85em;
+}
+main #about #content,
+main #support #content,
+main #products #content {
+  margin-top: 1em;
+  border-top: 2px solid #fff;
+}
+main #products #searchBar {
+  position: relative;
+  margin-top: -1em;
+  margin-left: 0.5em;
+}
+main #products #manualSearch {
+  display: none;
+}
+main #products #manualSearch select {
+  width: 10em;
+  border: 0;
+  -webkit-box-shadow: 0;
+  -moz-box-shadow: 0;
+  -o-box-shadow: 0;
+  -ms-box-shadow: 0;
+  box-shadow: 0;
+  outline: 0;
+  color: #333;
+  background-color: #fff;
+}
+main #products #manualSearch option:hover {
+  color: #fff;
+  background-color: #eb5a4f;
+}
+main #products #results {
+  margin-top: 1em;
+  border-top: 2px solid #fff;
+}
+main #spinner {
+  margin-top: 15%;
+  margin-left: 48%;
+  height: 4em;
+  width: 4em;
+  -webkit-border-radius: 4em;
+  -moz-border-radius: 4em;
+  -o-border-radius: 4em;
+  -ms-border-radius: 4em;
+  border-radius: 4em;
+  border: 0.25em solid #ccc;
+  border-left-color: #47b7e6;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-animation: spin 1s linear infinite;
+  -moz-animation: spin 1s linear infinite;
+  -o-animation: spin 1s linear infinite;
+  -webkit-animation: spin 1s linear infinite;
+  -moz-animation: spin 1s linear infinite;
+  -o-animation: spin 1s linear infinite;
+  -ms-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-ms-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }

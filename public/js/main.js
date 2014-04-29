@@ -6,7 +6,8 @@
     paths: {
       underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore',
       Backbone: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone',
-      jquery: '//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery'
+      jquery: '//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery',
+      Fuse: '//raw.githubusercontent.com/krisk/fuse/master/src/fuse.min'
     },
     shim: {
       underscore: {
@@ -15,313 +16,173 @@
       Backbone: {
         deps: ['underscore', 'jquery'],
         exports: 'Backbone'
+      },
+      Fuse: {
+        exports: 'Fuse'
       }
     }
   });
 
-  require(['jquery', 'Backbone'], function($, Backbone) {
-    var AboutView, AccountModel, OrderModel, OrdersCollection, OrdersView, ProductsView, Router, SearchCollection, SearchModel, SignupView, SupportView, activeSearch, bigBang, formSubmit, searchView, sessionToken, _ref, _ref1, _ref10, _ref11, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9;
+  require(['jquery', 'Backbone', 'Fuse'], function($, Backbone, Fuse) {
+    var Router, aboutView, activeSearch, bigBang, display, formSubmit, fuzzySearch, homeView, itemSearch, productsView, supportView, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
     activeSearch = false;
-    /*
-    # NOTE: Add url for testing
-    */
-
-    console.log('main.coffee loading...\n');
-    $('#searchInput').keydown(function() {
-      if (activeSearch === false) {
-        $('#hint').addClass('active');
-        return activeSearch = true;
-      }
-    });
-    $('#searchInput').keyup(function() {
-      $('#hint p').text("Search for \"" + ($(this).val()) + "\"");
-      if ($(this).val() === "") {
-        $('#hint').removeClass('active');
-        return activeSearch = false;
-      }
-    });
-    $('#searchInput').focus(function() {
-      if (activeSearch === true) {
-        return $('#hint').addClass('active');
-      }
-    });
-    $('#searchInput').focusout(function() {
-      return $('#hint').removeClass('active');
-    });
     /*
     # Views
     */
 
-    searchView = (function(_super) {
-      __extends(searchView, _super);
+    homeView = (function(_super) {
+      __extends(homeView, _super);
 
-      function searchView() {
-        _ref = searchView.__super__.constructor.apply(this, arguments);
+      function homeView() {
+        _ref = homeView.__super__.constructor.apply(this, arguments);
         return _ref;
       }
 
-      searchView.prototype.el = $('#search');
+      homeView.prototype.el = $('#home #searchContainer');
 
-      searchView.prototype.events = {
-        'click #searchButton': 'search'
+      homeView.prototype.events = {
+        "click #searchButton": "search",
+        "keyup #searchInput": "keyupInput",
+        "keydown #searchInput": "keydownInput",
+        "focus #searchInput": "focusInput",
+        "focusout #searchInput": "focusoutInput"
       };
 
-      /*
-      search: () ->
-        input = JSON.stringify($('#searchInput').val())
-        console.log input
-        url = ""
-      
-        $.ajax
-          url += '/api/search/'
-          type = 'GET'
-          dataType 'Json'
-          data: input
-          success: (data) ->
-            console.log 'Search request details: ' + data
-            # todo: Navigate to DashboardView, display search parts under PartsView
-      */
+      homeView.prototype.render = function() {
+        return display('#home');
+      };
 
+      homeView.prototype.search = function() {
+        var input;
+        input = JSON.stringify($('#searchInput').val());
+        search_results.set({
+          query: "" + input
+        });
+        return new productsView();
+      };
 
-      return searchView;
+      homeView.prototype.keyupInput = function() {
+        $('#hint p').text("Search for \"" + ($('#searchInput').val()) + "\"");
+        if ($('#searchInput').val() === "") {
+          $('#hint').removeClass('active');
+          return activeSearch = false;
+        }
+      };
+
+      homeView.prototype.keydownInput = function() {
+        if (activeSearch === false) {
+          $('#hint').addClass('active');
+          return activeSearch = true;
+        }
+      };
+
+      homeView.prototype.focusInput = function() {
+        if (activeSearch === true) {
+          return $('#hint').addClass('active');
+        }
+      };
+
+      homeView.prototype.focusoutInput = function() {
+        return $('#hint').removeClass('active');
+      };
+
+      return homeView;
 
     })(Backbone.View);
-    SignupView = (function(_super) {
-      __extends(SignupView, _super);
+    aboutView = (function(_super) {
+      __extends(aboutView, _super);
 
-      function SignupView() {
-        _ref1 = SignupView.__super__.constructor.apply(this, arguments);
+      function aboutView() {
+        _ref1 = aboutView.__super__.constructor.apply(this, arguments);
         return _ref1;
       }
 
-      SignupView.prototype.el = $('#signupform');
-
-      SignupView.prototype.events = {
-        'click #signupSubmit': "signup"
+      aboutView.prototype.initialize = function() {
+        return this.render();
       };
 
-      SignupView.prototype.render = function() {
-        console.log('SignupView initialized...');
-        return $('#signupform').toggle();
+      aboutView.prototype.render = function() {
+        return display('#about');
       };
 
-      SignupView.prototype.signup = function() {
-        var formValues, newToken, url;
-        console.log('submitting signup...');
-        url = '';
-        newToken = sessionToken($('#usernameForm').val(), $('#passwordForm').val(), $('#confirmpasswordForm').val());
-        formValues = {
-          username: $('#usernameForm').val(),
-          token: newToken,
-          phone: $('#phoneForm').val(),
-          address: $('#addressForm').val(),
-          city: $('#cityForm').val(),
-          state: $('#stateForm').val(),
-          zip: $('#zipForm').val()
-        };
-        return $.ajax({
-          url: url,
-          type: 'POST',
-          dataType: 'Json',
-          data: formValues,
-          success: function(data) {
-            console.log('Sign up request details: ' + data);
-            $('#signupform').toggle();
-            if (!data.error(navigate("dashboard", {
-              trigger: true,
-              replace: true
-            }))) {
-
-            } else {
-              return alert('Sign up: ' + data.error);
-            }
-          }
-        });
-      };
-
-      return SignupView;
+      return aboutView;
 
     })(Backbone.View);
-    AboutView = (function(_super) {
-      __extends(AboutView, _super);
+    supportView = (function(_super) {
+      __extends(supportView, _super);
 
-      function AboutView() {
-        _ref2 = AboutView.__super__.constructor.apply(this, arguments);
+      function supportView() {
+        _ref2 = supportView.__super__.constructor.apply(this, arguments);
         return _ref2;
       }
 
-      return AboutView;
+      supportView.prototype.initialize = function() {
+        return this.render();
+      };
+
+      supportView.prototype.render = function() {
+        return display('#support');
+      };
+
+      return supportView;
 
     })(Backbone.View);
-    SupportView = (function(_super) {
-      __extends(SupportView, _super);
+    productsView = (function(_super) {
+      __extends(productsView, _super);
 
-      function SupportView() {
-        _ref3 = SupportView.__super__.constructor.apply(this, arguments);
+      function productsView() {
+        _ref3 = productsView.__super__.constructor.apply(this, arguments);
         return _ref3;
       }
 
-      SupportView.prototype.render = function() {
-        console.log('SupportView initialized...');
-        return $('#support').toggle();
+      productsView.prototype.el = $('main #products');
+
+      productsView.prototype.events = {
+        "keyup #searchInput": "searchItems"
       };
 
-      return SupportView;
-
-    })(Backbone.View);
-    OrdersView = (function(_super) {
-      __extends(OrdersView, _super);
-
-      function OrdersView() {
-        _ref4 = OrdersView.__super__.constructor.apply(this, arguments);
-        return _ref4;
-      }
-
-      OrdersView.prototype.render = function() {
-        return console.log('OrdersView initialized...');
+      productsView.prototype.initialize = function() {
+        return this.render();
       };
 
-      return OrdersView;
-
-    })(Backbone.View);
-    ProductsView = (function(_super) {
-      __extends(ProductsView, _super);
-
-      function ProductsView() {
-        _ref5 = ProductsView.__super__.constructor.apply(this, arguments);
-        return _ref5;
-      }
-
-      ProductsView.prototype.render = function() {
-        return console.log('ProductsView initialized...');
+      productsView.prototype.render = function() {
+        return display('#products');
       };
 
-      return ProductsView;
+      productsView.prototype.searchItems = function() {
+        var input, options, results;
+        input = $('#products #searchBar #searchInput').val();
+        console.log(input);
+        options = {
+          caseSensitive: false,
+          includeScore: false,
+          shouldSort: true,
+          keys: ["Make", "Model", "Part", "Year", "ID"]
+        };
+        results = fuzzySearch("" + input, options);
+        return console.log(results);
+      };
+
+      return productsView;
 
     })(Backbone.View);
     /*
     # Models
     */
 
-    AccountModel = (function(_super) {
-      __extends(AccountModel, _super);
+    itemSearch = (function(_super) {
+      __extends(itemSearch, _super);
 
-      function AccountModel() {
-        _ref6 = AccountModel.__super__.constructor.apply(this, arguments);
-        return _ref6;
+      function itemSearch() {
+        _ref4 = itemSearch.__super__.constructor.apply(this, arguments);
+        return _ref4;
       }
 
-      AccountModel.prototype.defaults = function() {
-        return {
-          username: "",
-          token: "",
-          email: "",
-          phone: "",
-          address: "",
-          city: "",
-          state: "",
-          zip: ""
-        };
-      };
+      itemSearch.prototype.query = "";
 
-      return AccountModel;
+      return itemSearch;
 
     })(Backbone.Model);
-    OrderModel = (function(_super) {
-      __extends(OrderModel, _super);
-
-      function OrderModel() {
-        _ref7 = OrderModel.__super__.constructor.apply(this, arguments);
-        return _ref7;
-      }
-
-      OrderModel.prototype.defaults = function() {
-        return {
-          account: "",
-          part: "",
-          qty: "",
-          cost: "",
-          shipped: null,
-          paid: null
-        };
-      };
-
-      OrderModel.prototype.toggle = function() {
-        return this.save({
-          done: !this.get("done")
-        });
-      };
-
-      return OrderModel;
-
-    })(Backbone.Model);
-    SearchModel = (function(_super) {
-      __extends(SearchModel, _super);
-
-      function SearchModel() {
-        _ref8 = SearchModel.__super__.constructor.apply(this, arguments);
-        return _ref8;
-      }
-
-      SearchModel.prototype.defaults = function() {
-        return {
-          input: ""
-        };
-      };
-
-      return SearchModel;
-
-    })(Backbone.Model);
-    /*
-    # Collections
-    */
-
-    OrdersCollection = (function(_super) {
-      __extends(OrdersCollection, _super);
-
-      function OrdersCollection() {
-        _ref9 = OrdersCollection.__super__.constructor.apply(this, arguments);
-        return _ref9;
-      }
-
-      OrdersCollection.prototype.model = OrderModel;
-
-      OrdersCollection.prototype.done = function() {
-        return this.where({
-          done: true
-        });
-      };
-
-      OrdersCollection.prototype.shipped = function() {
-        return this.where({
-          shipped: true
-        });
-      };
-
-      OrdersCollection.prototype.payment = function() {
-        return this.where({
-          paid: true
-        });
-      };
-
-      OrdersCollection.prototype.comparator = 'order';
-
-      return OrdersCollection;
-
-    })(Backbone.Collection);
-    SearchCollection = (function(_super) {
-      __extends(SearchCollection, _super);
-
-      function SearchCollection() {
-        _ref10 = SearchCollection.__super__.constructor.apply(this, arguments);
-        return _ref10;
-      }
-
-      SearchCollection.prototype.model = SearchModel;
-
-      return SearchCollection;
-
-    })(Backbone.Collection);
     /*
     # Router
     */
@@ -330,46 +191,32 @@
       __extends(Router, _super);
 
       function Router() {
-        _ref11 = Router.__super__.constructor.apply(this, arguments);
-        return _ref11;
+        _ref5 = Router.__super__.constructor.apply(this, arguments);
+        return _ref5;
       }
 
       Router.prototype.routes = {
         "": "home",
-        "login": "login",
-        "signup": "signup",
+        "home": "home",
+        "about": "about",
         "support": "support",
-        "dashboard": "dashboard"
+        "products": "products"
       };
 
       Router.prototype.home = function() {
-        console.log('\nhome rendering...');
-        new searchView();
-        return console.log('home rendered\n');
+        return new homeView().render();
       };
 
-      Router.prototype.login = function() {
-        console.log('\nlogin rendering...');
-        new LoginView().render();
-        return console.log('login rendered\n');
-      };
-
-      Router.prototype.signup = function() {
-        console.log('\nsignup rendering...');
-        new SignupView().render();
-        return console.log('signup rendered\n');
+      Router.prototype.about = function() {
+        return new aboutView();
       };
 
       Router.prototype.support = function() {
-        console.log('\nsupport rendering...');
-        new SupportView().render();
-        return console.log('support rendered\n');
+        return new supportView();
       };
 
-      Router.prototype.dashboard = function() {
-        console.log('\ndashboard rendering...');
-        new DashboardView().render();
-        return console.log('dashboard rendered\n');
+      Router.prototype.products = function() {
+        return new productsView();
       };
 
       return Router;
@@ -379,32 +226,51 @@
     # Miscellaneous functions
     */
 
-    sessionToken = function(username, password, confirmPass) {
-      if (confirmPass === 'login' || password === confirmPass) {
-        return username + password;
-      } else {
-        return error;
-      }
-    };
     formSubmit = function() {
       return console.log('form submitted');
+    };
+    display = function(pagetodisplay) {
+      var page, pages, _i, _len;
+      pages = ['#home', '#products', '#about', '#support'];
+      for (_i = 0, _len = pages.length; _i < _len; _i++) {
+        page = pages[_i];
+        $("" + page).css('display', 'none');
+      }
+      $("" + pagetodisplay).css('display', 'block');
+      if (pagetodisplay !== '#home') {
+        $('header nav').addClass('active');
+        return $('body').css('background', '#eee');
+      } else {
+        $('header nav').removeClass('active');
+        $('body').css('background', "url('/img/backgrounds/chevelle.jpg') no-repeat center center fixed");
+        return $('body').css('background-size', "cover");
+      }
+    };
+    fuzzySearch = function(query, options) {
+      var fuse, items, result;
+      items = window.data;
+      console.log(items.dataroot.PartsTbl);
+      fuse = new Fuse(items, options);
+      return result = fuse.search("" + query);
     };
     /*
     # Initialize all at once, one success
     */
 
     bigBang = function() {
-      var orders, router, search_history;
-      console.log("Creating Views/Models/collections");
+      var router;
+      window.data = $.ajax({
+        url: '/data/parts.json',
+        datatype: 'json'
+      }).done(function() {
+        return console.log('parts.json successfully loaded');
+      });
       router = new Router;
-      orders = new OrdersCollection;
-      search_history = new SearchCollection;
-      Backbone.history.start();
-      console.log('history started');
-      return console.log('Created Views/Models/Collections');
+      window.search_results = new itemSearch();
+      return Backbone.history.start();
     };
     bigBang();
-    return console.log("\nmain.coffee loaded\n");
+    return console.log("main.coffee loaded");
   });
 
 }).call(this);

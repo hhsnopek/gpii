@@ -1,20 +1,46 @@
-#landing
-  header
-    nav
-      h1 Global Parts International Inc.
-      ul
-        li: a(href='#about') About
-        li: a(href='#support') Support
+header
+  nav
+    #header: h1: a(href='#home') Global Parts International Inc.
+    ul
+      li: a(href='#products') Products
+      li: a(href='#about') About
+      li: a(href='#support') Support
 
-  main
-    #search
-      h2 Find american car parts from 1945 - 1990
-      br
-      input(type='text' placeholder='Part / Car:   ID, Year, Make, Model')#searchInput
-      button#searchButton Search
-      br
+main
+  #home
+    #searchContainer
+      h2#searchTitle Find american car parts from 1945 - 1990
+
+      #searchBar
+        input(type='text' placeholder='Part / Car:   ID, Year, Make, Model')#searchInput
+        button#searchButton Search
+
       #hint
         p Search for ""
-  
-  footer
-    p &#169; copyright 2014
+
+  #about
+    h1#header About
+    #content
+      p Here's some interesting info about us!
+      p lorem ipsum
+
+  #support
+    h1#header Support
+    #content
+      p Did you need support? We can help you with that! :D
+      p lorem ipsum
+
+  #products
+    #searchBar
+      input(type='text' placeholder='Part / Car:   ID, Year, Make, Model')#searchInput
+
+    #manualSearch
+      select#make
+      select#model
+      select#year
+
+    #results
+      #spinner
+
+//footer
+  p &#169; copyright 2014

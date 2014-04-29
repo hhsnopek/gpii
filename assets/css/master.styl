@@ -8,100 +8,86 @@ grey = #333
 light-grey = lighten(grey, 30)
 black = #000
 
+spinnerSize = 4em
+
 vendors = webkit moz o ms official
 
-*
-  padding 0
-  margin 0
-  webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 
-body
+html, body
+  height 100%
   font-family 'Source Sans Pro' sans-serif
   font-weight 400
+  *
+    -webkit-box-sizing border-box
+    -moz-box-sizing border-box
+    box-sizing border-box
+
+  h1, h2, h3, h4, h5
+    font-weight 300
+
+body
   background url('/img/backgrounds/chevelle.jpg') no-repeat center center fixed
   background-size cover
+  -webkit-transition background 1s fade
+  -moz-transition background 1s fade
+  -o-transition background 1s fade
+  transition background 1s fade
 
-h1, h2, h3, h4, h5
-  font-weight 300
 
-
-#landing
-  a
-    reset-link()
-    color dark-blue
-    border-bottom 1px solid dark-blue
-  a:hover
-    color darken(dark-blue, 10)
-    border-bottom 2px solid darken(dark-blue, 15)
-  header
-    nav
-      h1
+header
+  height 20%
+  padding-top 1em
+  nav
+    #header
+      position absolute
+      left 5%
+      a
+        text-decoration none
         color grey
-        position absolute
-        top 1.3em
-        left 10%
-      ul
-        position absolute
-        top 3.5em
-        right 10%
-        list-style none
-        li
-          display inline-block
-          margin-left 1em
-        .active
-          border-bottom 3px solid red
+        border 0
+      a:hover
+        color grey
+        border 0
 
-
-  form
-    display none
-
-    position absolute
-    top 10%
-    left 25%
-    width 50%
-    height 80%
-    z-index 9999
-    background-color white
-    border 5px red solid
-    padding-left 2em
-    label
-      margin-left 2em
-    input
-      margin-left 1em
-      text-indent .5em
     ul
+      position absolute
+      margin-top 2.25em
+      right 10%
       list-style none
-      padding 0
-    li
-      padding-bottom .5em
+      li
+        display inline-block
+        a
+          margin 0 .5em .25em .5em
+          reset-link()
+          color dark-blue
+          padding-bottom .25em
+          border-bottom .2em solid lighten(light-grey, 25)
+        a:hover
+          color dark-blue
+          border-bottom .2em solid dark-blue
 
-    button
-      margin-left 60%
-      height 2em
-      background-color red
-      color white
-      padding .5em 1em .5em 1em
-      border 0
+      li.active
+        border-bottom 3px solid red
 
-  #search
-    position absolute
-    text-align center
-    top 40%
-    width 100%
-    *
-      box
-    h2
-      display inline-block
-      background-color rgba(0, 0, 0, .35)
-      color white
-      font-size 2em
-      margin-left -1em
-      margin-bottom .25em
-      padding .25em
+
+main
+  height 80%
+  #home
+    #searchContainer
+      padding-top 7.5%
+      text-align center
+      h2
+        display inline-block
+        background-color rgba(0, 0, 0, .35)
+        color white
+        font-size 2em
+        margin-left -1em
+        margin-bottom .25em
+        padding .25em
+
+  #searchBar
     input
-      margin-left -1.5em
+      margin-left -.5em
       width 32em
       height 2em
       outline 0
@@ -110,7 +96,7 @@ h1, h2, h3, h4, h5
     input:focus
       border 1px solid blue
     button
-      margin-left -1em
+      margin-left -5px
       border 0
       width 5em
       height 2em
@@ -123,35 +109,98 @@ h1, h2, h3, h4, h5
     button:visted
       background-color red
       outline 0
-      
 
-    #hint
-      display none //inline-block
-      margin 0
-      padding 0
-      margin-left -6.5em
-      width 31.25em
-      text-align left
-      list-style none
-      border 1px solid light-grey
-      box-shadow 0
-      p
-        height 2em
-        background-color white
-        border 1px 0 0 5px solid grey
-        color light-grey
-        text-indent .4em
-        padding .5em
-        margin 0
-
-    #hint.active
-      display inline-block
-
-
-  footer
-    position absolute
-    text-align center
-    bottom 0
-    width 100%
+  #hint
+    display none //inline-block
+    margin 0
+    padding 0
+    margin-left -5.5em
+    width 32em
+    text-align left
+    list-style none
+    border 1px solid light-grey
+    box-shadow 0
     p
-      margin-bottom .25em
+      height 2em
+      background-color white
+      border 1px 0 0 5px solid grey
+      color light-grey
+      text-indent .4em
+      padding .5em
+      margin 0
+
+  #hint.active
+    display inline-block
+
+
+  #about, #support, #products
+    display none
+    width 100%
+    height 100%
+    background-color #eee
+    padding 5%
+    padding-top 0
+
+    #header
+      font-size 2em
+      margin-top -.85em
+    #content
+      margin-top 1em
+      border-top 2px solid white
+
+  #products
+    #searchBar
+      position relative
+      margin-top -1em
+      margin-left .5em
+    #manualSearch
+      display none
+      select
+        width 10em
+        border 0
+        box-shadow 0
+        outline 0
+        color grey
+        background-color white
+      option:hover
+        color white
+        background-color red
+
+    #results
+      margin-top 1em
+      border-top 2px solid white
+
+
+  #spinner
+    margin-top 15%
+    margin-left (50% - (spinnerSize/2))
+    
+    height spinnerSize
+    width spinnerSize
+    border-radius spinnerSize
+    border (spinnerSize/16) solid lighten(grey, 60)
+    border-left-color blue
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-animation: spin 1s linear infinite;
+    -moz-animation:    spin 1s linear infinite;
+    -o-animation:      spin 1s linear infinite;
+    animation:         spin 1s linear infinite;
+
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% { 
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

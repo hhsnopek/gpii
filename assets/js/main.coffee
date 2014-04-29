@@ -3,183 +3,118 @@ require.config(
     underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore'
     Backbone: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone'
     jquery: '//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery'
+    Fuse: '//raw.githubusercontent.com/krisk/fuse/master/src/fuse.min'
   shim:
     underscore:
       exports: '_'
     Backbone:
       deps: ['underscore', 'jquery']
       exports: 'Backbone'
+    Fuse:
+      exports: 'Fuse'
 )
 
 require [
   'jquery',
   'Backbone',
-], ($, Backbone) ->
+  'Fuse',
+], ($, Backbone, Fuse) ->
   activeSearch = false
-
-  ###
-  # NOTE: Add url for testing
-  ###
-
-  console.log 'main.coffee loading...\n'
-
-  # event listeners
-  $('#searchInput').keydown( () ->
-    if activeSearch is false
-      $('#hint').addClass('active')
-      activeSearch = true
-  )
-  
-  $('#searchInput').keyup(() ->
-    $('#hint p').text("Search for \"#{$(this).val()}\"")
-    if $(this).val() is ""
-      $('#hint').removeClass('active')
-      activeSearch = false
-  )
-
-  $('#searchInput').focus( () ->
-    if activeSearch is true
-      $('#hint').addClass('active')
-  )
-  
-  $('#searchInput').focusout( () ->
-    $('#hint').removeClass('active')
-  )
-
 
   ###
   # Views
   ###
+  class homeView extends Backbone.View
 
-  class searchView extends Backbone.View
-    el: $('#search')
+    el: $('#home #searchContainer')
 
     events:
-      'click #searchButton': 'search'
-    ###
-    search: () ->
+      "click #searchButton": "search"
+      "keyup #searchInput": "keyupInput"
+      "keydown #searchInput": "keydownInput"
+      "focus #searchInput": "focusInput"
+      "focusout #searchInput": "focusoutInput"
+
+    render: ->
+      display('#home')
+
+    search: ->
       input = JSON.stringify($('#searchInput').val())
-      console.log input
-      url = ""
+      search_results.set({query: "#{input}"})
+      new productsView()
 
-      $.ajax
-        url += '/api/search/'
-        type = 'GET'
-        dataType 'Json'
-        data: input
-        success: (data) ->
-          console.log 'Search request details: ' + data
-          # todo: Navigate to DashboardView, display search parts under PartsView
-    ###
+    keyupInput: ->
+      $('#hint p').text("Search for \"#{$('#searchInput').val()}\"")
+      if $('#searchInput').val() is ""
+        $('#hint').removeClass('active')
+        activeSearch = false
 
-  class SignupView extends Backbone.View
-    el: $('#signupform')
+    keydownInput: ->
+      if activeSearch is false
+        $('#hint').addClass('active')
+        activeSearch = true 
+
+    focusInput: ->
+      if activeSearch is true
+        $('#hint').addClass('active')
+
+    focusoutInput: ->
+      $('#hint').removeClass('active')
+
+
+  class aboutView extends Backbone.View
+    initialize: ->
+      @render()
+
+    render: ->
+      display('#about')
+
+
+  class supportView extends Backbone.View
+    initialize: ->
+      @render()
+
+    render: ->
+      display('#support')
+
+
+  class productsView extends Backbone.View
+    el: $('main #products')
 
     events:
-      'click #signupSubmit': "signup"
+      "keyup #searchInput": "searchItems"
 
-    render: () ->
-      console.log 'SignupView initialized...'
-      $('#signupform').toggle()
+    initialize: ->
+      @render()
 
-    signup: () ->
-      console.log 'submitting signup...'
-      url = ''
-      newToken = sessionToken($('#usernameForm').val(), $('#passwordForm').val(), $('#confirmpasswordForm').val())
-      formValues =
-        username: $('#usernameForm').val()
-        token: newToken
-        phone: $('#phoneForm').val()
-        address: $('#addressForm').val()
-        city: $('#cityForm').val()
-        state: $('#stateForm').val()
-        zip: $('#zipForm').val()
+    render: ->
+      display('#products')
 
-      $.ajax
-        url: url
-        type: 'POST'
-        dataType: 'Json'
-        data: formValues
-        success: (data) ->
-          console.log 'Sign up request details: ' + data
-          $('#signupform').toggle()
-          unless data.error navigate("dashboard", {trigger: true, replace: true}) else alert 'Sign up: ' + data.error
-
-
-  class AboutView extends Backbone.View
-
-  class SupportView extends Backbone.View
-    render: () ->
-      console.log 'SupportView initialized...'
-      $('#support').toggle()
-
-
-  class OrdersView extends Backbone.View
-    render: () ->
-      console.log 'OrdersView initialized...'
-
-
-  class ProductsView extends Backbone.View
-    render: () ->
-      console.log 'ProductsView initialized...'
+    searchItems: ->
+      input = $('#products #searchBar #searchInput').val()
+      console.log input
+      options = {
+        caseSensitive: false,
+        includeScore: false,
+        shouldSort: true,
+        keys: [
+          "Make"
+          "Model"
+          "Part"
+          "Year"
+          "ID"
+        ]
+      }
+      results = fuzzySearch("#{input}", options)
+      console.log results
 
 
   ###
   # Models
   ###
-  class AccountModel extends Backbone.Model
-    defaults: () ->
-      username: ""
-      token: ""
-      email: ""
-      phone: ""
-      address: ""
-      city: ""
-      state: ""
-      zip: ""
 
-
-  class OrderModel extends Backbone.Model
-    defaults: () ->
-      account: ""
-      part: ""
-      qty: ""
-      cost: ""
-      shipped: null
-      paid: null
-
-    toggle: () ->
-      @save
-        done: !@get("done")
-
-  class SearchModel extends Backbone.Model
-    defaults: () ->
-      input: ""
-
-  ###
-  # Collections
-  ###
-  class OrdersCollection extends Backbone.Collection
-    model: OrderModel
-
-    done: () ->
-      @where
-        done: true
-
-    shipped: () ->
-      @where
-        shipped: true
-
-    payment: () ->
-      @where
-        paid: true
-
-    comparator: 'order'
-
-
-  class SearchCollection extends Backbone.Collection
-    model: SearchModel
-
+  class itemSearch extends Backbone.Model
+    query: ""
 
   ###
   # Router
@@ -188,62 +123,64 @@ require [
 
     routes:
       "": "home"
-      "login": "login"
-      "signup": "signup"
+      "home": "home"
+      "about": "about"
       "support": "support"
-      "dashboard": "dashboard"
+      "products": "products"
 
-    home: () ->
-      console.log '\nhome rendering...'
-      new searchView()
-      console.log 'home rendered\n'
+    home: ->
+      new homeView().render()
 
-    login: () ->
-      console.log '\nlogin rendering...'
-      new LoginView().render()
-      console.log 'login rendered\n'
+    about: ->
+      new aboutView()
 
-    signup: () ->
-      console.log '\nsignup rendering...'
-      new SignupView().render()
-      console.log 'signup rendered\n'
+    support: ->
+      new supportView()
 
-    support: () ->
-      console.log '\nsupport rendering...'
-      new SupportView().render()
-      console.log 'support rendered\n'
-
-    dashboard: () ->
-      console.log '\ndashboard rendering...'
-      new DashboardView().render()
-      console.log 'dashboard rendered\n'
-
+    products: ->
+      new productsView()
 
   ###
   # Miscellaneous functions
   ###
-  # TODO: Move functions to proper views
-  sessionToken = (username, password, confirmPass) ->
-    if confirmPass == 'login' or password == confirmPass
-      return username+password
-      
-    else
-      return error
-
   formSubmit = () ->
     console.log 'form submitted'
+
+
+  display = (pagetodisplay) ->
+    pages = ['#home', '#products', '#about', '#support']
+    for page in pages
+      $("#{page}").css('display', 'none')
+    
+    $("#{pagetodisplay}").css('display', 'block')
+    unless pagetodisplay is '#home'
+      $('header nav').addClass('active')
+      $('body').css('background', '#eee')
+    else
+      $('header nav').removeClass('active')
+      $('body').css('background', "url('/img/backgrounds/chevelle.jpg') no-repeat center center fixed")
+      $('body').css('background-size', "cover")
+
+  fuzzySearch = (query, options) ->
+    items = window.data
+    console.log items.dataroot.PartsTbl
+    fuse = new Fuse(items, options)
+    return result = fuse.search("#{query}")
+
 
   ###
   # Initialize all at once, one success
   ###
   bigBang = () ->
-    console.log "Creating Views/Models/collections"
+    window.data = $.ajax({
+      url: '/data/parts.json'
+      datatype: 'json'
+    }).done( () ->
+      console.log 'parts.json successfully loaded'
+    )
     router = new Router
-    orders = new OrdersCollection
-    search_history = new SearchCollection
+    window.search_results = new itemSearch()
     Backbone.history.start()
-    console.log 'history started'
-    console.log 'Created Views/Models/Collections'
 
   bigBang()
-  console.log "\nmain.coffee loaded\n"
+  console.log "main.coffee loaded"
