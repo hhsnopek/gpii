@@ -52,7 +52,7 @@ require [
     keydownInput: ->
       if activeSearch is false
         $('#hint').addClass('active')
-        activeSearch = true 
+        activeSearch = true
 
     focusInput: ->
       if activeSearch is true
@@ -151,7 +151,7 @@ require [
     pages = ['#home', '#products', '#about', '#support']
     for page in pages
       $("#{page}").css('display', 'none')
-    
+
     $("#{pagetodisplay}").css('display', 'block')
     unless pagetodisplay is '#home'
       $('header nav').addClass('active')
