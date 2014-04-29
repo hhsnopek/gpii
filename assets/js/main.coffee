@@ -150,7 +150,7 @@ require [
   display = (pagetodisplay) ->
     pages = ['#home', '#products', '#about', '#support']
     for page in pages
-      $("#{page}").css('display', 'none')
+      $(page).css('display', 'none')
 
     $("#{pagetodisplay}").css('display', 'block')
     unless pagetodisplay is '#home'
