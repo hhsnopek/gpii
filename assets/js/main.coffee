@@ -163,9 +163,8 @@ require [
 
   fuzzySearch = (query, options) ->
     items = window.data
-    console.log items.dataroot.PartsTbl
     fuse = new Fuse(items, options)
-    return result = fuse.search("#{query}")
+    return result = fuse.search(query)
 
 
   ###
