@@ -29,11 +29,11 @@ require [
     el: $('#home #searchContainer')
 
     events:
-      "click #searchButton": "search"
-      "keyup #searchInput": "keyupInput"
-      "keydown #searchInput": "keydownInput"
-      "focus #searchInput": "focusInput"
-      "focusout #searchInput": "focusoutInput"
+      'click #searchButton': 'search'
+      'keyup #searchInput': 'keyupInput'
+      'keydown #searchInput': 'keydownInput'
+      'focus #searchInput': 'focusInput'
+      'focusout #searchInput': 'focusoutInput'
 
     render: ->
       display('#home')
@@ -45,7 +45,7 @@ require [
 
     keyupInput: ->
       $('#hint p').text("Search for \"#{$('#searchInput').val()}\"")
-      if $('#searchInput').val() is ""
+      if $('#searchInput').val() is ''
         $('#hint').removeClass('active')
         activeSearch = false
 
@@ -82,7 +82,7 @@ require [
     el: $('main #products')
 
     events:
-      "keyup #searchInput": "searchItems"
+      'keyup #searchInput': 'searchItems'
 
     initialize: ->
       @render()
@@ -98,11 +98,11 @@ require [
         includeScore: false,
         shouldSort: true,
         keys: [
-          "Make"
-          "Model"
-          "Part"
-          "Year"
-          "ID"
+          'Make'
+          'Model'
+          'Part'
+          'Year'
+          'ID'
         ]
       }
       results = fuzzySearch(input, options)
@@ -114,7 +114,7 @@ require [
   ###
 
   class itemSearch extends Backbone.Model
-    query: ""
+    query: ''
 
   ###
   # Router
@@ -122,11 +122,11 @@ require [
   class Router extends Backbone.Router
 
     routes:
-      "": "home"
-      "home": "home"
-      "about": "about"
-      "support": "support"
-      "products": "products"
+      '': 'home'
+      home: 'home'
+      about: 'about'
+      support: 'support'
+      products: 'products'
 
     home: ->
       new homeView().render()
@@ -159,7 +159,7 @@ require [
     else
       $('header nav').removeClass('active')
       $('body').css('background', "url('/img/backgrounds/chevelle.jpg') no-repeat center center fixed")
-      $('body').css('background-size', "cover")
+      $('body').css('background-size', 'cover')
 
   fuzzySearch = (query, options) ->
     items = window.data
@@ -184,4 +184,4 @@ require [
     Backbone.history.start()
 
   bigBang()
-  console.log "main.coffee loaded"
+  console.log 'main.coffee loaded'
