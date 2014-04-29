@@ -93,19 +93,7 @@ require [
     searchItems: ->
       input = $('#products #searchBar #searchInput').val()
       console.log input
-      options = {
-        caseSensitive: false,
-        includeScore: false,
-        shouldSort: true,
-        keys: [
-          'Make'
-          'Model'
-          'Part'
-          'Year'
-          'ID'
-        ]
-      }
-      results = fuzzySearch(input, options)
+      results = fuse.search(input)
       console.log results
 
 
@@ -161,12 +149,6 @@ require [
       $('body').css('background', "url('/img/backgrounds/chevelle.jpg') no-repeat center center fixed")
       $('body').css('background-size', 'cover')
 
-  fuzzySearch = (query, options) ->
-    items = window.data
-    fuse = new Fuse(items, options)
-    return result = fuse.search(query)
-
-
   ###
   # Initialize all at once, one success
   ###
@@ -176,7 +158,15 @@ require [
       datatype: 'json'
     ).done((data) ->
       console.log 'parts.json successfully loaded'
-      window.data = data
+      data = data.dataroot.PartsTbl # remove the shitty wrapper thing
+      window.fuse = new Fuse(
+        data,
+        caseSensitive: false,
+        includeScore: false,
+        shouldSort: true,
+        keys: ['Make', 'Model', 'Part', 'Year', 'ID']
+      )
+      window.data = data # just stick it there, cause yolo
     )
 
     router = new Router
