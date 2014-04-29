@@ -172,12 +172,14 @@ require [
   # Initialize all at once, one success
   ###
   bigBang = () ->
-    window.data = $.ajax({
+    $.ajax(
       url: '/data/parts.json'
       datatype: 'json'
-    }).done( () ->
+    ).done((data) ->
       console.log 'parts.json successfully loaded'
+      window.data = data
     )
+
     router = new Router
     window.search_results = new itemSearch()
     Backbone.history.start()
